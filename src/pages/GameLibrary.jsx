@@ -31,25 +31,54 @@ const GameLibrary = () => {
     setShowForm(false);
   };
 
-  if (loading) return <div className="loading">Cargando juegos...</div>;
+  // Calcular estadísticas
+  const totalGames = games.length;
+  const totalHours = games.reduce((sum, game) => sum + game.hoursPlayed, 0);
+  const completedGames = games.filter(game => game.status === 'Completado').length;
+
+  if (loading) return <div className="loading">Cargando tu biblioteca...</div>;
   if (error) return <div className="error">Error: {error}</div>;
 
   return (
     <div className="game-library">
-      <h1>🎮 Mi Biblioteca de Juegos</h1>
-      <p>Tienes {games.length} juegos en tu biblioteca</p>
+      {/* HEADER NATURAL */}
+      <div className="library-header">
+        <h1>GAMETRACKERRR!!!</h1>
+        <p className="library-subtitle">
+          Tienes {totalGames} juegos en la biblioteca
+        </p>
+        
+        {/* ESTADÍSTICAS SIMPLES */}
+        <div className="stats-overview">
+          <div className="stat-item">
+            <span className="stat-number">{totalGames}</span>
+            <div className="stat-label">Juegos</div>
+          </div>
+          <div className="stat-item">
+            <span className="stat-number">{totalHours}h</span>
+            <div className="stat-label">Horas</div>
+          </div>
+          <div className="stat-item">
+            <span className="stat-number">{completedGames}</span>
+            <div className="stat-label">Completados</div>
+          </div>
+        </div>
+      </div>
       
+      {/* BOTÓN SIMPLE */}
       <button 
         onClick={() => setShowForm(!showForm)}
         className="toggle-form-btn"
       >
-        {showForm ? '❌ Cancelar' : '➕ Agregar Juego'}
+        {showForm ? 'Cerrar' : 'Agregar Juego'}
       </button>
       
+      {/* FORMULARIO */}
       {showForm && (
         <GameForm onGameCreated={handleGameCreated} />
       )}
       
+      {/* GRID QUE OCUPA TODO EL ANCHO */}
       <div className="games-grid">
         {games.map(game => (
           <GameCard 
