@@ -100,7 +100,7 @@ const GameForm = ({ onGameCreated }) => {
         max={new Date().getFullYear() + 2}
       />
       
-      <input
+    <input
         type="url"
         name="imageUrl"
         placeholder="URL de la imagen"
@@ -114,9 +114,30 @@ const GameForm = ({ onGameCreated }) => {
         <option value="Completado">Completado</option>
         <option value="Abandonado">Abandonado</option>
       </select>
+
+    <input
+        type="number"
+        name="rating"
+        placeholder="Rating (0-5)"
+        value={formData.rating}
+        onChange={handleChange}
+        min="0"
+        max="5"
+        />
+
+        <input
+        type="number"
+        name="hoursPlayed"
+        placeholder="Horas jugadas"
+        value={formData.hoursPlayed}
+        onChange={handleChange}
+        min="0"
+        step="0.5"
+        />
       
       <button type="submit">Agregar Juego</button>
     </form>
+    
   );
 };
 
