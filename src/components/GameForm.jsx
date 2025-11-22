@@ -24,11 +24,21 @@ const GameForm = ({ onGameCreated }) => {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    console.log('Datos a enviar:', formData);
+    // CONVIERTE los números explícitamente - ESTO ES IMPORTANTE
+    const dataToSend = {
+      ...formData,
+      rating: Number(formData.rating),
+      hoursPlayed: Number(formData.hoursPlayed),
+      releaseYear: Number(formData.releaseYear)
+    };
+
+    console.log('Datos a enviar:', dataToSend);
+    console.log('URL de la API:', import.meta.env.VITE_API_URL || 'http://localhost:5001');
 
     try {
-      const response = await gameService.createGame(formData);
+      const response = await gameService.createGame(dataToSend);
       console.log('Respuesta del servidor:', response);
+      
       alert('¡Juego creado exitosamente!');
       setFormData({
         title: '',
@@ -41,10 +51,12 @@ const GameForm = ({ onGameCreated }) => {
         rating: 0,
         hoursPlayed: 0
       });
+      
       if (onGameCreated) onGameCreated();
+      
     } catch (error) {
-        console.error('Error completo:', error);
-        console.error('Mensaje del servidor:', error.response?.data);
+      console.error('Error completo:', error);
+      console.error('Mensaje del servidor:', error.response?.data);
       alert(`Error: ${error.response?.data?.message || 'Error al crear el juego'}`);
     }
   };
@@ -100,7 +112,7 @@ const GameForm = ({ onGameCreated }) => {
         max={new Date().getFullYear() + 2}
       />
       
-    <input
+      <input
         type="url"
         name="imageUrl"
         placeholder="URL de la imagen"
@@ -115,7 +127,7 @@ const GameForm = ({ onGameCreated }) => {
         <option value="Abandonado">Abandonado</option>
       </select>
 
-    <input
+      <input
         type="number"
         name="rating"
         placeholder="Rating (0-5)"
@@ -123,9 +135,9 @@ const GameForm = ({ onGameCreated }) => {
         onChange={handleChange}
         min="0"
         max="5"
-        />
+      />
 
-        <input
+      <input
         type="number"
         name="hoursPlayed"
         placeholder="Horas jugadas"
@@ -133,11 +145,10 @@ const GameForm = ({ onGameCreated }) => {
         onChange={handleChange}
         min="0"
         step="0.5"
-        />
+      />
       
       <button type="submit">Agregar Juego</button>
     </form>
-    
   );
 };
 

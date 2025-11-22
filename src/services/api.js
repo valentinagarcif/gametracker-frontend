@@ -1,7 +1,6 @@
 import axios from 'axios';
 
-const API_BASE_URL = 'http://localhost:5000/api';
-
+const API_BASE_URL = 'http://localhost:5001/api';
 const api = axios.create({
   baseURL: API_BASE_URL,
   headers: {
@@ -12,7 +11,10 @@ const api = axios.create({
 export const gameService = {
   getGames: () => api.get('/games'),
   getGameById: (id) => api.get(`/games/${id}`),
-  createGame: (gameData) => api.post('/games', gameData),
+  createGame: (gameData) => {
+  console.log('Enviando a API:', gameData);
+  return api.post('/games', gameData);
+  },
   updateGame: (id, gameData) => api.put(`/games/${id}`, gameData),
   deleteGame: (id) => api.delete(`/games/${id}`),
 };
